@@ -1,3 +1,6 @@
+cdjhihv
+
+
 
 library(ggplot2)
 library(plyr)
@@ -26,16 +29,7 @@ Lighgreygrid <- rgb(217,217,217, names = "LightGreygrid", maxColorValue = 255)
 
 # To use for fills, add
 scale_fill_manual(values=AmbiataPalette)
-
-# To use for line and point colors, add
-scale_colour_manual(values=AmbiataPalette)
-
-#Defining Title, Subtitle, Axiz names
-Title <- "Chart heading"
-Subtitle <- NA
-Axis_X_Name <- "\nAge in years"
-Axis_Y_Name <- "Percentage \n"
-
+	
 
 #defining plot type and variables
 dt_final_eval_current$AgeYears <- (dt_final_eval_current$demographics_v.age/365)
