@@ -168,7 +168,7 @@ library(extrafont)
 font_import(pattern="[C/c]omic")
 
 
-
+sdfsdfsdfds
 library(data.table)
 library(ggplot2)
 library(ggsubplot)
@@ -433,14 +433,12 @@ main <- function(arg.cust, arg.dict, arg.lab, arg.cap, arg.out, arg.watermark) {
   lapply(collprime, function(x) { make_a_plot(x, title=arg.cap, watermark=watermark) })
   make_demographics_plot(newsfacts, title=arg.cap, watermark=watermark)
   dev.off()
-}
+}sdfsdf
 
 args<-commandArgs(trailingOnly = TRUE)
 if (length(args) < 5)
 {
   print("USAGE: pca <instances> <dictionary> <label_names> <caption> <output_pdf> <<watermark>>")
   quit(status=1, save="n")
-}
-
-main(args[1], args[2], args[3], args[4], args[5], args[6])
+}, args[2], args[3], args[4], args[5], args[6])
 
