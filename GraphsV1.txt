@@ -7,7 +7,7 @@ library(plyr)
 library(scales)
 library(png)
 library(extrafont)
-font_import()
+font_import()ssfds
 
 Black	#000000
 	Ambiata green	#78B45A
