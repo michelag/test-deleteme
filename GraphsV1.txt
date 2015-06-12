@@ -1,0 +1,452 @@
+
+library(ggplot2)
+library(plyr)
+library(scales)
+library(png)
+library(extrafont)
+font_import()
+
+Black	#000000
+	Ambiata green	#78B45A
+		Ambiata grey	#7F7F7F
+			Ambiata blue	#58ABB8
+				Blue	#51A7F9
+					Orange	#F4D792
+						Dark green	#006000
+							Gridlines grey #D9D9D9
+
+AmbiataPalette <- c("#78B45A","#58ABB8","#7F7F7F", "#000000","#51A7F9","#F4D792","#006000")
+
+AmbiataPalettetransp <- c("#78B45A7D","#58ABB87D","#7F7F7F7D", "#0000007D","#51A7F97D","#F4D7927D","#0060007D")
+
+
+# "#D9D9D9"
+Lighgreygrid <- rgb(217,217,217, names = "LightGreygrid", maxColorValue = 255)
+
+
+# To use for fills, add
+scale_fill_manual(values=AmbiataPalette)
+
+# To use for line and point colors, add
+scale_colour_manual(values=AmbiataPalette)
+
+#Defining Title, Subtitle, Axiz names
+Title <- "Chart heading"
+Subtitle <- NA
+Axis_X_Name <- "\nAge in years"
+Axis_Y_Name <- "Percentage \n"
+
+
+#defining plot type and variables
+dt_final_eval_current$AgeYears <- (dt_final_eval_current$demographics_v.age/365)
+dt_final_eval_current$AgeYearsBins <- round_any(dt_final_eval_current$AgeYears, 5)
+m <- ggplot(dt_final_eval_current, aes(x=AgeYearsBins, colour=filetype, group=filetype, fill=filetype))
+
+
+#Full page graph
+
+#Adding Title, subtitle, gridlines, colours, Axis, Legend etc
+m <- m + geom_density(alpha=0.5) +  scale_fill_manual(values=AmbiataPaletteTransp) 
+m <- m + scale_color_manual(values=AmbiataPaletteTransp) 
+m <- m + ggtitle (expression(atop("Chart Heading", atop(("Subheading"), "")))) 
+m <- m +  scale_x_continuous(Axis_X_Name, limits = c(0, 95)) 
+m <- m + scale_y_continuous(Axis_Y_Name,limits = c(0, 0.045), labels = percent)
+m <- m + theme (plot.title = element_text (size=40, face="bold"),
+panel.background=element_blank(), 
+axis.line = element_line(size = 0.7, colour = "black"),
+legend.position = "bottom",
+legend.text = element_text(size = 22),
+legend.title = element_blank(),
+axis.text = element_text(size = 20, colour = "black"),
+axis.title = element_text(size = 25, face = "bold"),
+panel.grid.major.y = element_line(colour = "#D9D9D9", size=0.3),
+panel.grid.minor.y = element_blank(),
+panel.grid.major.x = element_blank(),
+panel.grid.minor.x = element_blank(),
+plot.background = element_blank(),
+complete = FALSE)
+m <- m + guides(fill = guide_legend(keywidth = 0.7, keyheight = 0.7))
+
+#Inserting Logo
+Logopath <- "/home/mguimaraes/Ambiata_logo.png"
+img <- readPNG(source = Logopath)
+Logo <- rasterGrob(img, interpolate=TRUE)   
+H <- m + annotation_custom(Logo, xmin=80, xmax=100, ymin=0.041, ymax=0.045)
+
+#Exporting the plot - pdf (full page)
+ggsave("Fullpage.pdf", width=13, height=8.8)
+
+
+
+#Half page graph
+
+m <- m + geom_density(alpha=0.5) +  scale_fill_manual(values=AmbiataPaletteTransp) 
+m <- m + scale_color_manual(values=AmbiataPaletteTransp) 
+m <- m + ggtitle (expression(atop("Chart Heading", atop(("Subheading"), "")))) 
+m <- m +  scale_x_continuous(Axis_X_Name, limits = c(0, 95)) 
+m <- m + scale_y_continuous(Axis_Y_Name,limits = c(0, 0.045), labels = percent)
+m <- m + theme (plot.title = element_text (size=30, face="bold"),
+                panel.background=element_blank(), 
+                axis.line = element_line(size = 0.7, colour = "black"),
+                legend.position = "bottom",
+                legend.text = element_text(size = 20),
+                legend.title = element_blank(),
+                axis.text = element_text(size = 20, colour = "black"),
+                axis.title = element_text(size = 25, face = "bold"),
+                panel.grid.major.y = element_line(colour = "#D9D9D9", size=0.3),
+                panel.grid.minor.y = element_blank(),
+                panel.grid.major.x = element_blank(),
+                panel.grid.minor.x = element_blank(),
+                plot.background = element_blank(),
+                complete = FALSE)
+m <- m + guides(fill = guide_legend(keywidth = 0.7, keyheight = 0.7))
+
+#Inserting Logo
+Logopath <- "/home/mguimaraes/Ambiata_logo.png"
+img <- readPNG(source = Logopath)
+Logo <- rasterGrob(img, interpolate=TRUE)   
+H <- m + annotation_custom(Logo, xmin=80, xmax=100, ymin=0.041, ymax=0.045)
+
+#Exporting the plot - pdf (half page)
+ggsave("halfpage.pdf", width=13, height=6)
+
+
+#Small graph - a quarter of page
+m <- m + geom_density(alpha=0.5) +  scale_fill_manual(values=AmbiataPaletteTransp) 
+m <- m + scale_color_manual(values=AmbiataPaletteTransp) 
+m <- m +  scale_x_continuous(Axis_X_Name, limits = c(0, 95)) 
+m <- m + scale_y_continuous(Axis_Y_Name,limits = c(0, 0.045), labels = percent)
+m <- m + theme (panel.background=element_blank(), 
+                axis.line = element_line(size = 0.7, colour = "black"),
+                legend.position = "bottom",
+                legend.text = element_text(size = 16),
+                legend.title = element_blank(),
+                axis.text = element_text(size = 16, colour = "black"),
+                axis.title = element_text(size = 20),
+                panel.grid.major.y = element_line(colour = "#D9D9D9", size=0.3),
+                panel.grid.minor.y = element_blank(),
+                panel.grid.major.x = element_blank(),
+                panel.grid.minor.x = element_blank(),
+                plot.background = element_blank(),
+                complete = FALSE)
+m <- m + guides(fill = guide_legend(keywidth = 0.7, keyheight = 0.7))
+
+#Inserting Logo
+Logopath <- "/home/mguimaraes/Ambiata_logo.png"
+img <- readPNG(source = Logopath)
+Logo <- rasterGrob(img, interpolate=TRUE)   
+H <- m + annotation_custom(Logo, xmin=80, xmax=100, ymin=0.041, ymax=0.045)
+
+#Exporting the plot - pdf (Small plot - a quarter of a page)
+ggsave("smallplot.pdf", width=6.5, height=5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+m <- m + ggtitle (expression(atop(Title, atop(italic(Subtitle), "")))) 
+                axis.line = element_line(size = 0.7, colour = "grey"),
+
+#Only one colour transparent 
+m <- m + geom_density(alpha=0.5) +  scale_fill_manual(values=c("#78B45A","#78B4FF7D")) 
+m <- m + scale_color_manual(values=c("#78B45A","#78B4FF7D")) 
+panel.grid.major.y = element_line(colour = "#D9D9D9", size=0.2),
+
+install.packages("extrafont")
+library(extrafont)
+font_import(pattern="[A/a]rial")
+fonts()                    
+font_import(paths = "~/.fonts", pattern="[A/a]rial")
+
+
+install.packages("extrafont")
+library(extrafont)
+font_import(pattern="[C/c]omic")
+
+
+
+library(data.table)
+library(ggplot2)
+library(ggsubplot)
+library(grid)
+library(scales)
+library(stringr)
+library(RColorBrewer)
+library(png)
+
+load_customer_data <- function(instances.input, dictionary.input)
+{
+  fread(dictionary.input) -> dictionary
+  dictionary[V4 == "string", classes := 'character']
+  dictionary[V4 == "int" | V4 == "double" | V4 == "long", classes := 'numeric']
+  dictionary[is.na(classes), classes := "NULL"]
+  
+  fread(instances.input, sep="|", header=F, colClasses=c("character", unlist(dictionary$classes))) -> customers
+  setnames(customers, c("aka", unlist(dictionary[V4 == "string" | V4 == "int" | V4 == "double" | V4 == "long", paste(V2, V3, sep="_colon_")])))
+  
+  # Replace unseemly characters with more palatable versions. Without this, backtick quoting is often required, which is a pain, and often not supported in libraries.
+  setnames(customers, str_replace_all(names(customers), " ", "_space_"))
+  setnames(customers, str_replace_all(names(customers), ",", "_comma_"))
+  setnames(customers, str_replace_all(names(customers), "-", "_dash_"))
+  setnames(customers, str_replace_all(names(customers), "=", "_equals_"))
+  setnames(customers, str_replace_all(names(customers), "\\+", "_plus_"))
+  
+  setkey(customers, aka)
+  customers
+}
+
+load_labels <- function(label) {
+  y <- fread(label, header=F, colClasses=c("character", "factor"))
+  setnames(y, c("aka", "label"))
+  unique(y)
+  y
+}
+
+collect_sections <- function (instances)
+{
+  instances.relevant <- instances[,grepl("pixel_content_colon_prop_section_equals_.*12w", names(instances))
+                                  | grepl("aka", names(instances)) ,with=F]
+  setnames(instances.relevant, str_replace_all(names(instances.relevant), "pixel_content_colon_prop_section_equals_", ""))
+  setnames(instances.relevant, str_replace_all(names(instances.relevant), "_12w", ""))
+  
+  instances.relevant
+}
+
+collect_sites <- function (instances)
+{
+  instances.relevant <- instances[,grepl("pixel_content_colon_prop_site_equals_.*12w", names(instances))
+                                  | grepl("aka", names(instances)) ,with=F]
+  setnames(instances.relevant, str_replace_all(names(instances.relevant), "pixel_content_colon_prop_site_equals_", ""))
+  setnames(instances.relevant, str_replace_all(names(instances.relevant), "_12w", ""))
+  
+  instances.relevant
+}
+
+collect_newsfact <- function (instances)
+{
+  instances.relevant <- instances[,grepl("newsfact_colon_.*", names(instances))
+                                  | grepl("aka", names(instances)) ,with=F]
+  setnames(instances.relevant, str_replace_all(names(instances.relevant), "newsfact_colon_", ""))
+  
+  instances.relevant
+}
+
+# TODO: investigate some weird instances here.
+filter_na_rows <- function (instances) {
+  tmp <- instances[instances[,list(droppable=!any(is.na(unlist(.SD)))), by="aka"]$droppable]
+  # HACK: This should not be needed.
+  remove_na <- function(DT, rep) {
+    for (i in names(DT))
+      DT[is.na(get(i)),i:=rep,with=FALSE]
+  }
+  remove_na(tmp, 0)
+  tmp
+}
+
+collect_mean_values <- function(instances, label_col) {
+  other_columns <- setdiff(names(instances), c("aka", label_col))
+  std <- function(x) sd(x)/sqrt(length(x))
+  together  <- instances[,list(attr=names(.SD), m=unlist(lapply(.SD, mean)), se=unlist(lapply(.SD, std))), .SDcols=other_columns]
+  separated <- instances[,list(attr=names(.SD), m=unlist(lapply(.SD, mean)), se=unlist(lapply(.SD, std))), by=label_col, .SDcols=other_columns]
+  rejoinedm <- separated[,setattr(as.list(m), 'names', paste('m',str_replace_all(str_replace_all(get(label_col), "-1","negative"), "1", "positive"),sep="_")),by=attr]
+  rejoineds <- separated[,setattr(as.list(se), 'names', paste('se',str_replace_all(str_replace_all(get(label_col), "-1","negative"), "1", "positive"),sep="_")),by=attr]
+  
+  complete  <- merge(together, rejoinedm, by="attr")
+  complete  <- merge(complete, rejoineds, by="attr")
+  complete[,difference := (`m_negative` - `m_positive`) / m]
+  complete[,sediff := sqrt(`se_negative` * `se_negative` + `se_positive` * `se_positive`) / m]
+  
+  complete[,attr := reorder(attr, -m)]
+  complete
+}
+
+# Function to produce a single page plot, with elements laid out on a grid. Option title included.
+multiplot <- function(..., plotlist=NULL, cols=1, layout=NULL, title=NULL, watermark=NULL) {
+  num_rows_extra = if (is.null(title)) 0 else 1
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+  
+  numPlots = length(plots)
+  
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                     ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+  
+  # 7 is a magic number. Determines the relative scale of the title compared to the other plots.
+  rowheights = if (num_rows_extra == 0) replicate(nrow(layout), 1) else c(1, replicate(nrow(layout), max(1, 7 - nrow(layout))))
+  
+  if (numPlots==1) {
+    print(plots[[1]])
+    
+  } else {
+    # Set up the page
+    grid.newpage()
+    
+    pushViewport(viewport(layout = grid.layout(nrow(layout) + num_rows_extra, ncol(layout), heights = unit(rowheights, "null"))))
+    
+    if (!is.null(title))
+      grid.text(title, vp = viewport(layout.pos.row = 1, layout.pos.col = 1:cols), x = 0.02, just="left", gp = gpar(fontsize=20))
+    
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+      
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row + num_rows_extra,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+  if (!is.null(watermark)) {
+    grobbed <- rasterGrob(watermark, interpolate=TRUE, x=0.98, y=0.98, just=c("right", "top"), height=unit(0.5, "inch"))
+    grid.draw(grobbed)
+  }
+}
+
+make_a_plot <- function (instances, title=NULL, watermark=NULL) {
+  # Colours
+  ambiatagreen <- rgb(120,180,90, names = "ambiatagreen", maxColorValue = 255)
+  ambiatablue  <- rgb(120,180,255, names = "ambiatablue", maxColorValue = 255)
+  ambiatagrey  <- rgb(127,127,127, names = "ambiatagrey", maxColorValue = 255)
+  
+  bars  <- ggplot(instances) +
+    geom_bar(aes(x=attr, y=m), stat="identity", fill=ambiatagrey) +
+    scale_y_continuous(labels = function(x) format(percent(x), width = 7, justify= "right")) +
+    xlab(NULL) +
+    ylab("Viewing proportions") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.4),
+          panel.grid.major.y = element_line(colour = "#D9D9D9"),
+          panel.background = element_blank(),
+          panel.grid.minor.y= element_blank(),
+          panel.grid.major.x= element_blank(),
+          panel.grid.minor.x= element_blank())
+  lines <- ggplot(instances) +
+    geom_line(aes(x=attr, y=difference, group = 1), colour=ambiatagreen, size=2) +
+    geom_point(aes(x=attr, y=difference, group = 1), colour=ambiatagreen, size=5) +
+    geom_point(aes(x=attr, y=difference, group = 1), colour="white", size=2) +
+    geom_ribbon(aes(x=attr,ymin=-2*sediff + difference,ymax=2*sediff + difference, group=1),alpha=0.3, fill=ambiatagreen) +
+    scale_y_continuous(labels = function(x) format(percent(x), width = 7, justify= "right")) +
+    annotate("text", x=instances$attr, y=instances$difference, label = sprintf("%.0f%%", instances$difference * 100), angle = 0, size=2.5, vjust=-2) +
+    xlab(NULL) +
+    ylab("Difference") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.4),
+          panel.grid.major.y = element_line(colour = "#D9D9D9"),
+          panel.background = element_blank(),
+          panel.grid.minor.y= element_blank(),
+          panel.grid.major.x= element_blank(),
+          panel.grid.minor.x= element_blank())
+  multiplot(bars, lines, title=title, watermark=watermark)
+}
+
+make_demographics_plot <- function(instances, title=NULL, watermark=NULL) {
+  ambiatagreen <- rgb(120,180,90, names = "ambiatagreen", maxColorValue = 255)
+  ambiatablue  <- rgb(120,180,255, names = "ambiatablue", maxColorValue = 255)
+  ambiatagrey  <- rgb(127,127,127, names = "ambiatagrey", maxColorValue = 255)
+  
+  ambiatapallete <- c(ambiatagreen, ambiatablue)
+  names(ambiatapallete) <- c("-1", "1")
+  
+  lifestages <- ggplot(instances[!is.na(exp_dem_lifestages), list(N = .N / nrow(instances[!is.na(exp_dem_lifestages) & label == .BY[2]] )), by=c("exp_dem_lifestages", "label")], aes(x=exp_dem_lifestages, fill=label)) +
+    geom_bar(aes(y=N), stat="identity", position=position_dodge(), alpha=0.85) +
+    scale_y_continuous(labels = percent) +
+    coord_flip() +
+    xlab(NULL) +
+    ylab("News Corp Demographic Segments") +
+    scale_fill_manual(values=ambiatapallete, name="Segment") +
+    theme(
+      panel.grid.major.x = element_line(colour = "#D9D9D9"),
+      panel.background = element_blank(),
+      panel.grid.minor.y= element_blank(),
+      panel.grid.major.y= element_blank(),
+      panel.grid.minor.x= element_blank(),
+      legend.position="bottom",
+      legend.direction="horizontal")
+  
+  ages <- ggplot(instances[!is.na(dem_age_group_nr), list(N = .N / nrow(instances[!is.na(dem_age_group_nr) & label == .BY[2]] )), by=c("dem_age_group_nr", "label")], aes(x=factor(dem_age_group_nr, levels = c("Under 14","13 - 17","18 - 24","25 - 34","35 - 49","50+")), group=label, fill=label)) +
+    geom_ribbon(aes(ymin = 0, ymax = N / sum(N)), alpha=0.7) +
+    xlab("Age") +
+    ylab(NULL) +
+    scale_fill_manual(values=ambiatapallete) +
+    scale_y_continuous(labels = percent) +
+    theme(
+      panel.grid.major.x = element_line(colour = "#D9D9D9"),
+      panel.background = element_blank(),
+      panel.grid.minor.y= element_blank(),
+      panel.grid.major.y= element_blank(),
+      panel.grid.minor.x= element_blank(),
+      legend.position="none")
+  
+  numchildren <- ggplot(instances[!is.na(dem_children_number), list(N = .N / nrow(instances[!is.na(dem_children_number) & label == .BY[2]] )), by=c("dem_children_number", "label")], aes(x=factor(dem_children_number, levels = c("0","1","2","3","4","5","6+")), group=label, fill=label)) +
+    geom_ribbon(aes(ymin = 0, ymax = N / sum(N)), alpha=0.7) +
+    xlab("Number of children") +
+    ylab(NULL) +
+    scale_fill_manual(values=ambiatapallete) +
+    scale_y_continuous(labels = percent) +
+    theme(
+      panel.grid.major.x = element_line(colour = "#D9D9D9"),
+      panel.background = element_blank(),
+      panel.grid.minor.y= element_blank(),
+      panel.grid.major.y= element_blank(),
+      panel.grid.minor.x= element_blank(),
+      legend.position="none")
+  
+  grid.newpage()
+  pushViewport(viewport(layout = grid.layout(3, 2, widths = unit(c(3,2), "null"), heights = unit(c(1,4,4), "null"))))
+  
+  grid.text(title, vp = viewport(layout.pos.row = 1, layout.pos.col = 1:2), x = 0.02, just="left", gp = gpar(fontsize=20))
+  print(lifestages, vp = viewport(layout.pos.row = 2:3, layout.pos.col = 1))
+  print(ages, vp = viewport(layout.pos.row = 2, layout.pos.col = 2))
+  print(numchildren, vp = viewport(layout.pos.row = 3, layout.pos.col = 2))
+  
+  if (!is.null(watermark)) {
+    grobbed <- rasterGrob(watermark, interpolate=TRUE, x=0.98, y=0.98, just=c("right", "top"), height=unit(0.5, "inch"))
+    grid.draw(grobbed)
+  }
+}
+
+##########
+## Main ##
+##########
+
+main <- function(arg.cust, arg.dict, arg.lab, arg.cap, arg.out, arg.watermark) {
+  cust   <- load_customer_data(arg.cust, arg.dict)
+  labels <- load_labels(arg.lab)
+  
+  collected <- lapply(list(collect_sections(cust), collect_sites(cust)), function(x) { merge(x, labels, by="aka")})
+  collprime <- lapply(collected, function(x) { collect_mean_values(filter_na_rows(x), "label") })
+  
+  watermark <- (if (!is.na(arg.watermark)) {
+    readPNG(arg.watermark)
+  } else NULL)
+  
+  newsfacts <- merge(collect_newsfact(cust), labels, by="aka")
+  
+  pdf(arg.out, width=10, height=7)
+  lapply(collprime, function(x) { make_a_plot(x, title=arg.cap, watermark=watermark) })
+  make_demographics_plot(newsfacts, title=arg.cap, watermark=watermark)
+  dev.off()
+}
+
+args<-commandArgs(trailingOnly = TRUE)
+if (length(args) < 5)
+{
+  print("USAGE: pca <instances> <dictionary> <label_names> <caption> <output_pdf> <<watermark>>")
+  quit(status=1, save="n")
+}
+
+main(args[1], args[2], args[3], args[4], args[5], args[6])
+
